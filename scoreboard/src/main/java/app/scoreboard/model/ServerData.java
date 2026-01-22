@@ -22,6 +22,10 @@ public class ServerData {
     // Estado de conexión
     private final BooleanProperty connected = new SimpleBooleanProperty(false);
 
+    // Fecha y hora
+    private final StringProperty currentDate = new SimpleStringProperty("--/--/----");
+    private final StringProperty currentTime = new SimpleStringProperty("--:--:--");
+
     // Constructor
     public ServerData() {
         // Valores por defecto ya están asignados arriba
@@ -129,6 +133,32 @@ public class ServerData {
 
     public BooleanProperty connectedProperty() {
         return connected;
+    }
+
+    // Getters y Setters para currentDate
+    public String getCurrentDate() {
+        return currentDate.get();
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate.set(currentDate);
+    }
+
+    public StringProperty currentDateProperty() {
+        return currentDate;
+    }
+
+    // Getters y Setters para currentTime
+    public String getCurrentTime() {
+        return currentTime.get();
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime.set(currentTime);
+    }
+
+    public StringProperty currentTimeProperty() {
+        return currentTime;
     }
 
     /**

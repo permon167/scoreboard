@@ -5,6 +5,8 @@ import app.scoreboard.config.StyleConfig;
 import app.scoreboard.model.ServerData;
 import app.scoreboard.ui.ScoreBoardView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,6 +25,10 @@ public class DataUpdater {
     private final ScoreBoardView scoreboardView;
     private Timer updateTimer;
     private final Random random = new Random();
+
+    // Formateadores de fecha y hora
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     // Datos de prueba
     private final String[] serverNames = {"Lobby", "SkyWars-1", "BedWars-2", "Survival", "Creative"};
@@ -73,6 +79,11 @@ public class DataUpdater {
         // Simular obtención de datos
         // TODO: Reemplazar con llamadas reales a la API o mod de Minecraft
 
+        // Obtener fecha y hora actual
+        LocalDateTime now = LocalDateTime.now();
+        String currentDate = now.format(dateFormatter);
+        String currentTime = now.format(timeFormatter);
+
         String playerName = "Player" + random.nextInt(1000);
         int coins = random.nextInt(10000);
         int level = random.nextInt(100) + 1;
@@ -95,11 +106,16 @@ public class DataUpdater {
                     gameMode
             );
 
+            // Actualizar fecha y hora
+            serverData.setCurrentDate(currentDate);
+            serverData.setCurrentTime(currentTime);
+
             scoreboardView.refresh();
 
             System.out.println("✓ Datos actualizados: " + playerName +
                     " | Server: " + serverName +
-                    " | Players: " + playersOnline);
+                    " | Players: " + playersOnline +
+                    " | " + currentDate + " " + currentTime);
         });
     }
 
@@ -118,7 +134,7 @@ public class DataUpdater {
         System.out.println("⚠ Conexión a Minecraft aún no implementada");
         System.out.println("  Opciones futuras:");
         System.out.println("  1. Mod de Forge/Fabric que envíe datos vía WebSocket");
-        System.out.println("  2. API REST del servidor de Hyteria");
+        System.out.println("  2. API REST del servidor de Hytalia");
         System.out.println("  3. Parseo de logs del cliente");
     }
 }

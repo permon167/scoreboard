@@ -26,6 +26,8 @@ public class ScoreBoardView {
     private Label playersOnlineLabel;
     private Label gameModeLabel;
     private Label statusLabel;
+    private Label dateLabel;
+    private Label timeLabel;
 
     public ScoreBoardView(ServerData serverData) {
         this.serverData = serverData;
@@ -50,6 +52,8 @@ public class ScoreBoardView {
         mainContainer.getChildren().addAll(
                 buildHeader(),
                 createSeparator(),
+                buildDateTimeSection(),
+                createSeparator(),
                 buildPlayerSection(),
                 createSeparator(),
                 buildServerSection(),
@@ -70,12 +74,26 @@ public class ScoreBoardView {
         VBox header = new VBox(5);
         header.setAlignment(Pos.CENTER);
 
-        Label title = new Label("HYTERIA NETWORK");
+        Label title = new Label("HYTALIA NETWORK");
         title.setFont(StyleConfig.HEADER_FONT);
         title.setTextFill(StyleConfig.HEADER_COLOR);
 
         header.getChildren().add(title);
         return header;
+    }
+
+    /**
+     * Construye la sección de fecha y hora
+     */
+    private VBox buildDateTimeSection() {
+        VBox section = new VBox(StyleConfig.SPACING);
+        section.setAlignment(Pos.CENTER);
+
+        dateLabel = createDataLabel("Fecha: --/--/----");
+        timeLabel = createDataLabel("Hora: --:--:--");
+
+        section.getChildren().addAll(dateLabel, timeLabel);
+        return section;
     }
 
     /**
@@ -202,6 +220,15 @@ public class ScoreBoardView {
 
         serverData.gameModeProperty().addListener((obs, old, newVal) ->
                 gameModeLabel.setText("Modo: " + newVal)
+        );
+
+        // Date and time bindings
+        serverData.currentDateProperty().addListener((obs, old, newVal) ->
+                dateLabel.setText("Fecha: " + newVal)
+        );
+
+        serverData.currentTimeProperty().addListener((obs, old, newVal) ->
+                timeLabel.setText("Hora: " + newVal)
         );
 
         // Connection status binding
